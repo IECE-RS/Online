@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Reset e definição de fontes */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #2c3e50; /* Fundo mais escuro */
+            font-family: 'Poppins', sans-serif;
+            color: #ecf0f1; /* Cor do texto mais clara */
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Aplicar o desfoque no fundo durante a animação */
+        .blur-background {
+            backdrop-filter: blur(8px); /* Desfoque */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(44, 62, 80, 0.6); /* Cor semi-transparente */
+            z-index: 10;
+        }
+
+        header {
+            background-color: #34495e;
+            color: white;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Logo dentro de um círculo branco */
+        header .logo-container {
+            background-color: ;
+            border-radius: ;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header img {
+            width: 300px; /* Logo maior */
+            height: 100px;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        header button {
+            background-color: #e67e22;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        header button:hover {
+            background-color: #f39c12;
+        }
+
+        /* Estilo da animação de digitação */
+        .typing-animation-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 100;
+        }
+
+        .typing-animation-container p {
+            font-size: 1.5rem;
+            color: #ecf0f1;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-bar input, .search-bar select {
+            width: 250px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            transition: all 0.3s;
+        }
+
+        .search-bar input:focus, .search-bar select:focus {
+            outline: none;
+            border-color: #e67e22;
+        }
+
+        .book-card {
+            background-color: #34495e; /* Fundo mais escuro para os cards */
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .book-card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .book-card-body h5 {
+            font-size: 18px;
+            color: #ecf0f1; /* Cor do texto mais clara */
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .book-card-body p {
+            font-size: 14px;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+
+     .book-card-body a {
+    background-color: #2ecc71;
+    color: white;
+    padding: 15px 50px; /* Padding ajustado para garantir que o botão seja grande o suficiente */
+    text-align: center;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 50px; /* Define o botão como redondo */
+    display: inline-block;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+}
+
+.book-card-body a:hover {
+    background-color: #27ae60;
+}
+
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 30px 50px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #34495e;
+            color: white;
+            font-size: 14px;
+            margin-top: 40px;
+        }
+
+        /* Estilo da caixa de explicação */
+        .info-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 80%;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+
+        .info-box img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        .info-box p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .info-box button {
+            background-color: #e67e22;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .info-box button:hover {
+            background-color: #f39c12;
+        }
+
+        /* Estilo para o botão de informações */
+        .info-button {
+            position: fixed;
+            bottom: 30px;
+            right: 15px;
+            background-color: #e67e22;
+            color: white;
+            padding: 20px;
+            border-radius: 100px;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 100;
+            border: none;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/3778/3778876.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .info-button:hover {
+            background-color: #f39c12;
+        }
+
+        /* Responsividade para mobile */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-bar input, .search-bar select {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .info-button {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animação de digitação -->
+    <div class="typing-animation-container" id="typing-container">
+        <p id="typing-message-1"></p>
+        <p id="typing-message-2"></p>
+    </div>
+
+    <!-- Fundo embaçado -->
+    <div class="blur-background" id="blurBackground"></div>
+
+    <!-- Cabeçalho -->
+    <header>
+        <div class="logo-container">
+            <img src="https://iecers.wordpress.com/wp-content/uploads/2025/02/horizontal-branco.png" alt="Logo">
+        </div>
+        <h1>Biblioteca Digital da IECE-RS</h1>
+        <button onclick="window.location.href='https://iecers.org/'">Voltar ao Site</button>
+    </header>
+
+    <!-- Barra de Pesquisa e Filtro -->
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Pesquisar por título ou descrição" oninput="filterBooks()">
+            <select id="categoryFilter" onchange="filterBooks()">
+                <option value="">Todas as Categorias</option>
+                <option value="Ficção">Ficção</option>
+                <option value="Romance">Romance</option>
+                <option value="História">História</option>
+                <option value="Ciência">Ciência</option>
+                <option value="Filosofia">Filosofia</option>
+                <option value="Literatura">Literatura</option>
+                <option value="Arte">Arte</option>
+                <option value="Política">Política</option>
+                <option value="Religião">Religião</option>
+                <option value="Psicologia">Psicologia</option>
+                <option value="Educação">Educação</option>
+                <option value="Tecnologia">Tecnologia</option>
+                <option value="Economia">Economia</option>
+                <option value="Biografias">Biografias</option>
+                <option value="Geografia">Geografia</option>
+                <option value="Antropologia">Antropologia</option>
+                <option value="Sociologia">Sociologia</option>
+                <option value="Matemática">Matemática</option>
+                <option value="Medicina">Medicina</option>
+                <option value="Engenharia">Engenharia</option>
+                <option value="Arquitetura">Arquitetura</option>
+                <option value="Astronomia">Astronomia</option>
+                <option value="Química">Química</option>
+                <option value="Física">Física</option>
+                <option value="Linguística">Linguística</option>
+                <option value="Poemas">Poemas</option>
+                <option value="Contos">Contos</option>
+                <option value="Novelas">Novelas</option>
+                <option value="Ensaios">Ensaios</option>
+                <option value="Relatórios">Relatórios</option>
+                <option value="Documentários">Documentários</option>
+                <option value="Romances Históricos">Romances Históricos</option>
+                <option value="Aventura">Aventura</option>
+                <option value="Mistério">Mistério</option>
+                <option value="Terror">Terror</option>
+                <option value="Fantasia">Fantasia</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+                <option value="Contos de Fadas">Contos de Fadas</option>
+                <option value="Comédia">Comédia</option>
+                <option value="Drama">Drama</option>
+                <option value="Thriller">Thriller</option>
+                <option value="Crime">Crime</option>
+                <option value="Detective">Detective</option>
+                <option value="Espionagem">Espionagem</option>
+                <option value="Ação">Ação</option>
+                <option value="Viagem no Tempo">Viagem no Tempo</option>
+                <option value="Música">Música</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Grid de livros -->
+    <div class="book-grid" id="bookGrid"></div>
+
+    <!-- Caixa de informações -->
+    <div class="info-box" id="infoBox">
+        <img src="https://iecers.wordpress.com/wp-content/uploads/2025/02/quadrado-preto-1.png" alt="Logo">
+        <p>Este site oferece livros em formato PDF de domínio público. Você pode baixar e compartilhar à vontade. Aproveite!</p>
+        <button onclick="closeInfoBox()">Fechar</button>
+    </div>
+
+    <!-- Botão de informações -->
+    <button class="info-button" onclick="openInfoBox()"> </button>
+
+    <!-- Rodapé -->
+    <div class="footer">
+        <p>Biblioteca Digital - IECE-RS - Todos os direitos reservados © 2025</p>
+    </div>
+
+    <script>
+        // Função de animação de digitação
+        const messages = [
+            "Bem-vindo a nossa biblioteca!",
+            " Aqui você encontra livros de domínio público para download."
+        ];
+
+        let currentMessage = 0;
+        let currentLetter = 0;
+
+        function typeMessage() {
+            const typingMessage1 = document.getElementById('typing-message-1');
+            const typingMessage2 = document.getElementById('typing-message-2');
+
+            if (currentLetter < messages[currentMessage].length) {
+                typingMessage1.innerHTML += messages[currentMessage].charAt(currentLetter);
+                currentLetter++;
+                setTimeout(typeMessage, 50); // Animação mais rápida
+            } else {
+                currentMessage++;
+                if (currentMessage < messages.length) {
+                    currentLetter = 0;
+                    setTimeout(typeMessage, 1000);
+                } else {
+                    document.getElementById('typing-container').style.display = 'none'; // Esconder após a animação
+                    document.getElementById('blurBackground').style.display = 'none'; // Remover desfoque
+                }
+            }
+        }
+
+        typeMessage();
+
+        // Funções para abrir e fechar a caixa de informações
+        function openInfoBox() {
+            document.getElementById('infoBox').style.display = 'block';
+        }
+
+        function closeInfoBox() {
+            document.getElementById('infoBox').style.display = 'none';
+        }
+
+      // Dados dos livros (exemplo)
+const books = [
+    
+   
+    {
+        "title": "Dom Quixote",
+        "description": "A história do cavaleiro errante que luta contra moinhos de vento.",
+        "cover": "https://m.media-amazon.com/images/I/71MnClIKzkL.jpg",
+        "pdfLink": "https://itaudeminas.mg.gov.br/arquivos/ere/livros/Dom-Quixote-Miguel-de-Cervantes.pdf",
+        "category": "Ficção"
+    },
+    {
+        "title": "Os Miseráveis",
+        "description": "Romance sobre a luta pela redenção na França pós-revolução.",
+        "cover": "https://m.media-amazon.com/images/I/71L28YvPobL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.agr-tc.pt/bibliotecadigital/aetc/download/658/Os%20Miseraveis%20-%20Victor%20Hugo.pdf",
+        "category": "Romance"
+    },
+    {
+        "title": "A Origem das Espécies",
+        "description": "Obra seminal sobre a teoria da evolução por seleção natural.",
+        "cover": "https://m.media-amazon.com/images/I/71IIZESq-uL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://ecologia.ib.usp.br/ffa/arquivos/abril/darwin1.pdf",
+        "category": "Ciência"
+    },
+    {
+        "title": "O Príncipe",
+        "description": "Tratado político sobre como conquistar e manter o poder.",
+        "cover": "https://m.media-amazon.com/images/I/61JDP4-2mEL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://marcosfabionuva.com/wp-content/uploads/2011/08/o-prc3adncipe-madras.pdf",
+        "category": "Política"
+    },
+    {
+        "title": "A Divina Comédia",
+        "description": "Viagem alegórica pelo Inferno, Purgatório e Paraíso.",
+        "cover": "https://m.media-amazon.com/images/I/814q7QXghGL.jpg",
+        "pdfLink": "https://files.cercomp.ufg.br/weby/up/4/o/divinacomedia.pdf",
+        "category": "Literatura"
+    },
+    {
+        "title": "Manifesto Comunista",
+        "description": "Crítica ao capitalismo e defesa do comunismo.",
+        "cover": "https://m.media-amazon.com/images/I/81mZS2qHGkL.jpg",
+        "pdfLink": "https://www.pcp.pt/publica/edicoes/25501144/manifes.pdf",
+        "category": "Política"
+    },
+    {
+        "title": "O Capital",
+        "description": "Análise crítica da economia política.",
+        "cover": "https://m.media-amazon.com/images/I/71FXP9ye6xL.jpg",
+        "pdfLink": "https://www.gepec.ufscar.br/publicacoes/livros-e-colecoes/marx-e-engels/o-capital-livro-1.pdf",
+        "category": "Economia"
+    },
+    {
+        "title": "Hamlet",
+        "description": "Tragédia sobre o príncipe dinamarquês que busca vingança.",
+        "cover": "https://m.media-amazon.com/images/I/71yTTLMgq8L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.ebooksbrasil.org/adobeebook/hamlet.pdf",
+        "category": "Drama"
+    },
+    {
+        "title": "Fausto",
+        "description": "Homem que vende sua alma ao diabo em troca de conhecimento.",
+        "cover": "https://m.media-amazon.com/images/I/71J6Mdqu7NL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.ebooksbrasil.org/adobeebook/faustogoethe.pdf",
+        "category": "Filosofia"
+    },
+    {
+        "title": "Orgulho e Preconceito",
+        "description": "Romance que explora questões de classe e casamento na Inglaterra.",
+        "cover": "https://m.media-amazon.com/images/I/71Xta4Nf7uL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://reciclaleitores.com.br/wp-content/uploads/2020/10/ORGULHO-E-PRECONCEITO-Austen-Jane.pdf",
+        "category": "Romance"
+    },
+    {
+        "title": "A Máquina do Tempo",
+        "description": "Ficção científica sobre viagens ao futuro distante.",
+        "cover": "https://m.media-amazon.com/images/I/91XAnKe28UL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://cabana-on.com/Ler/wp-content/uploads/2017/08/H.-G.-Wells-A-Maquina-do-Tempo.pdf",
+        "category": "Sci-Fi"
+    },
+    {
+        "title": "A Ilha do Tesouro",
+        "description": "Aventura clássica sobre piratas e tesouros escondidos.",
+        "cover": "https://m.media-amazon.com/images/I/71qfpSQlprL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://mojo.org.br/wp-content/uploads/2021/02/0006_IDT_BILINGUE.pdf",
+        "category": "Aventura"
+    },
+    {
+        "title": "O Morro dos Ventos Uivantes",
+        "description": "Romance gótico sobre paixão e vingança na Inglaterra rural.",
+        "cover": "https://m.media-amazon.com/images/I/71lqmkoeosL.jpg",
+        "pdfLink": "https://diegodelpasso.com/wp-content/uploads/2016/05/emily-brontc3ab-e28093-o-morro-dos-ventos-uivantes.pdf",
+        "category": "Romance"
+    },
+    {
+        "title": "Frankenstein",
+        "description": "A criação de um monstro por um cientista e as consequências disso.",
+        "cover": "https://m.media-amazon.com/images/I/71W4xUTL0YL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.agr-tc.pt/bibliotecadigital/aetc/download/565/Frankenstein%20-%20Mary%20Shelley.pdf",
+        "category": "Terror"
+    },
+    {
+        "title": "Moby Dick",
+        "description": "Caçada épica pela baleia branca.",
+        "cover": "https://m.media-amazon.com/images/I/61kif0Iav7L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.lighthousebilingue.com.br/wp-content/uploads/2018/07/Moby-Dick-Herman-Melville.pdf",
+        "category": "Aventura"
+    },
+    {
+        "title": "Metamorfose",
+        "description": "Homem que acorda transformado em um inseto gigante.",
+        "cover": "https://m.media-amazon.com/images/I/8115Gj1cb6L._UF894,1000_QL80_.jpg",
+        "pdfLink": "https://mojo.org.br/wp-content/uploads/2024/08/006-A-metamorfose-978-65-89008-23-1.pdf",
+        "category": "Ficção"
+    },
+    {
+        "title": "Crime e Castigo",
+        "description": "Jovem que comete um assassinato e lida com a culpa.",
+        "cover": "https://m.media-amazon.com/images/I/71Gmavgu3ZL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.agr-tc.pt/bibliotecadigital/aetc/download/501/Crime%20e%20Castigo%20-%20Fiodor%20Dostoievski.pdf",
+        "category": "Crime"
+    },
+    {
+        "title": "O Retrato de Dorian Gray",
+        "description": "Jovem que mantém sua beleza enquanto seu retrato envelhece.",
+        "cover": "https://m.media-amazon.com/images/I/51REmr5NmnL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.jaimemoniz.com/images/docs/recursos/Oscar-Wilde-livro.pdf",
+        "category": "Mistério"
+    },
+    {
+        "title": "A República",
+        "description": "Diálogo filosófico sobre a justiça e o Estado ideal.",
+        "cover": "https://m.media-amazon.com/images/I/81KkahDyzgL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.eniopadilha.com.br/documentos/Platao_A_Republica.pdf",
+        "category": "Filosofia"
+    },
+    {
+        "title": "Contos de Grimm",
+        "description": "Coleção de contos clássicos como 'Branca de Neve' e 'Cinderela'.",
+        "cover": "https://m.media-amazon.com/images/I/91xjYR3rbEL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.bonfinopolis.mg.gov.br/wp-content/uploads/2021/04/Box-Os-77-melhores-contos-de-Gr-Irmaos-Grimm.pdf",
+        "category": "Contos de Fadas"
+    },
+    {
+        "title": "O Livro da Selva",
+        "description": "Aventuras de Mowgli, criado por lobos na selva indiana.",
+        "cover": "https://m.media-amazon.com/images/I/71285JCyLHL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://archive.org/download/OLivrodaSelva/0001-O_livro_da_selva-Rudyard_Kipling_Mojo-DaoP.pdf",
+        "category": "Aventura"
+    },
+    {
+        "title": "A Letra Escarlate",
+        "description": "Mulher marcada por adultério na sociedade puritana.",
+        "cover": "https://m.media-amazon.com/images/I/71TCed5PZ8L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.infolivros.org/livros/a-letra-escarlate-nathaniel-hawthorne.pdf",
+        "category": "Drama"
+    },
+    {
+        "title": "Ulisses",
+        "description": "Relato moderno da Odisseia em Dublin.",
+        "cover": "https://m.media-amazon.com/images/I/31APmYQuZ9L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://iedamagri.files.wordpress.com/2014/07/ulisses-james-joyce-em-portuguc3aas.pdf",
+        "category": "Literatura"
+    },
+    {
+        "title": "Robinson Crusoé",
+        "description": "Náufrago que sobrevive em uma ilha deserta.",
+        "cover": "https://m.media-amazon.com/images/I/61839J1keYL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.matinaljornalismo.com.br/wp-content/uploads/2021/03/robinson-crusoe-daniel-defoe.pdf",
+        "category": "Aventura"
+    },
+    {
+        "title": "Os Lusíadas",
+        "description": "Épico que narra as viagens de Vasco da Gama.",
+        "cover": "https://m.media-amazon.com/images/I/81rBJSXik0S._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://bibliotecadigital.ebsqf.pt/view/30/Os%20Lusiadas%20-%20Luis%20de%20Camoes.pdf",
+        "category": "Literatura"
+    },
+    {
+        "title": "Guerra e Paz",
+        "description": "Romance que mistura ficção e história durante as guerras napoleônicas.",
+        "cover": "https://m.media-amazon.com/images/I/814J+usGFjL._AC_UF894,1000_QL80_.jpg",
+        "pdfLink": "https://www.agr-tc.pt/bibliotecadigital/aetc/download/673/Guerra%20e%20Paz%20-%20Edicao%20Completa%20-%20Leon%20Tolstoi.pdf",
+        "category": "Romances Históricos"
+    },
+    {
+        "title": "As Aventuras de Sherlock Holmes",
+        "description": "Contos sobre o famoso detetive e seu parceiro Watson.",
+        "cover": "https://m.media-amazon.com/images/I/71pUxLqTOAL.jpg",
+        "pdfLink": "https://diegodelpasso.com/wp-content/uploads/2016/05/arthur-conan-doyle-sherlock-holmes-edic3a7c3a3o-completa.pdf",
+        "category": "Detective"
+    },
+    {
+        "title": "O Corvo",
+        "description": "Poema sombrio sobre perda e luto.",
+        "cover": "https://m.media-amazon.com/images/I/517rNLByjzL._AC_UF350,350_QL50_.jpg",
+        "pdfLink": "https://www.agr-tc.pt/bibliotecadigital/aetc/download/712/O%20Corvo%20-%20Edgar%20Allan%20Poe.pdf",
+        "category": "Poemas"
+    },
+    {
+        "title": "Viagens de Gulliver",
+        "description": "Sátira sobre a sociedade inglesa por meio das viagens do protagonista.",
+        "cover": "https://m.media-amazon.com/images/I/81GgLnG0kHL.jpg",
+        "pdfLink": "https://mojo.org.br/wp-content/uploads/2021/09/LL-VIAGENS-DE-GULLIVER-MOJO-1.pdf",
+        "category": "Aventura"
+    },
+    {
+        "title": "O Jardim das Aflições",
+        "description": "Reflexões sobre filosofia e cultura ocidental.",
+        "cover": "https://m.media-amazon.com/images/I/71cf7CNr-US._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://philarchive.org/archive/DECOJD",
+        "category": "Filosofia"
+    },
+    {
+        "title": "A Arte da Guerra",
+        "description": "Tratado militar sobre estratégia e tática.",
+        "cover": "https://m.media-amazon.com/images/I/51Fe45NGwkL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://seminarioiab.com.br/wp-content/uploads/2021/09/A-arte-da-guerra.pdf",
+        "category": "Política"
+    },
+    {
+        "title": "Os Três Mosqueteiros",
+        "description": "Aventuras de três espadachins leais ao rei da França.",
+        "cover": "https://m.media-amazon.com/images/I/71E6onsCl+L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://biblioteca.conafer.org/wp-content/uploads/tainacan-items/21495/22778/Os-Tres-Mosqueteiros-por-Alexandre-Dumas.pdf",
+        "category": "Aventura"
+    },
+    {
+        "title": "O Processo",
+        "description": "Homem acusado por um crime desconhecido em um mundo burocrático.",
+        "cover": "https://m.media-amazon.com/images/I/71n7HqKTzFL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://100melhoreslivros.files.wordpress.com/2009/12/franz-kafka-o-processo.pdf",
+        "category": "Mistério"
+    },
+    {
+        "title": "A Educação Sentimental",
+        "description": "Romance que narra a vida amorosa de um jovem na França.",
+        "cover": "https://m.media-amazon.com/images/I/61BtHG+5ySL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://grudars.files.wordpress.com/2017/08/a-educacao-sentimental-gustave-flaubert.pdf",
+        "category": "Romance"
+    },
+    {
+        "title": "Cândido",
+        "description": "Sátira filosófica sobre otimismo e as desventuras humanas.",
+        "cover": "https://m.media-amazon.com/images/I/71FCVFVJ2HL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=2239&co_midia=2",
+        "category": "Filosofia"
+    },
+    {
+        "title": "O Livro dos Espíritos",
+        "description": "Fundamento do espiritismo codificado por Allan Kardec.",
+        "cover": "https://m.media-amazon.com/images/I/61Ak1rIl2QL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.luzespirita.org.br/leitura/pdf/l1.pdf",
+        "category": "Religião"
+    },
+    {
+        "title": "O Coração das Trevas",
+        "description": "Viagem por um rio africano que revela o lado sombrio do colonialismo.",
+        "cover": "https://m.media-amazon.com/images/I/914shILdCrL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://mojo.org.br/wp-content/uploads/2021/09/LL-CORACAO-DAS-TREVAS-MOJO.pdf",
+        "category": "Drama"
+    },
+    {
+        "title": "A Volta ao Mundo em 80 Dias",
+        "description": "Aventura sobre uma viagem ao redor do mundo em tempo recorde.",
+        "cover": "https://m.media-amazon.com/images/I/71UKvlLXALL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.netmundi.org/home/wp-content/uploads/2020/10/A-volta-ao-mundo-em-80-dias-julio-verne.pdf",
+        "category": "Aventura"
+    },
+    {
+        "title": "Os Irmãos Karamázov",
+        "description": "Romance filosófico sobre fé, dúvida e assassinato.",
+        "cover": "https://m.media-amazon.com/images/I/91hO1oi4LjL.jpg",
+        "pdfLink": "https://cesarmangolin.wordpress.com/wp-content/uploads/2010/08/dostoievski-fiodor-os-irmaos-karamazov-completo.pdf",
+        "category": "Filosofia"
+    },
+    {
+        "title": "O Conto da Aia",
+        "description": "Distopia sobre uma sociedade opressora e patriarcal.",
+        "cover": "https://m.media-amazon.com/images/I/91AHNAr638L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://moodle.ibiruba.ifrs.edu.br/pluginfile.php/25041/mod_resource/content/1/O-Conto-da-Aia-Margaret-Atwood.pdf",
+        "category": "Ficção"
+    },
+    {
+        "title": "O Livro de Meditações",
+        "description": "Reflexões filosóficas do imperador romano Marco Aurélio.",
+        "cover": "https://m.media-amazon.com/images/I/91zmHFBB37L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://masculinistaopressoroficial.files.wordpress.com/2017/06/meditac3a7c3b5es-marco-aurc3a9lio.pdf",
+        "category": "Filosofia"
+    },
+    {
+        "title": "Poemas de Emily Dickinson",
+        "description": "Coleção de poesias sobre morte, amor e natureza.",
+        "cover": "https://m.media-amazon.com/images/I/51N2h1485SL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://prioste2015.wordpress.com/wp-content/uploads/2015/03/emily-dickinson-poemas-traduzidos.pdf",
+        "category": "Poemas"
+    },
+    {
+        "title": "O Homem Invisível",
+        "description": "Ficção científica sobre um homem que descobre como se tornar invisível.",
+        "cover": "https://m.media-amazon.com/images/I/81h3bvau71L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://kbook.com.br/wp-content/files_mf/h.g.wellsohomeminvisivel.pdf",
+        "category": "Sci-Fi"
+    },
+    {
+        "title": "A Cidadela",
+        "description": "Romance que aborda as dificuldades da profissão médica.",
+        "cover": "https://m.media-amazon.com/images/I/71Bs12SKa7S.jpg",
+        "pdfLink": "https://www.epedagogia.com.br/materialbibliotecaonine/582Cidadela.pdf",
+        "category": "Medicina"
+    },
+    {
+        "title": "A Eneida",
+        "description": "Poema épico sobre a fundação de Roma.",
+        "cover": "https://m.media-amazon.com/images/I/91G6F2KztSS._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.ebooksbrasil.org/adobeebook/eneida.pdf",
+        "category": "Poemas"
+    },
+    {
+        "title": "Poesias Completas de Camões",
+        "description": "Obra poética do maior poeta português.",
+        "cover": "https://m.media-amazon.com/images/I/61GjziX0y3L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://bibliotecadigital.ebsqf.pt/view/30/Os%20Lusiadas%20-%20Luis%20de%20Camoes.pdf",
+        "category": "Poemas"
+    },
+    {
+        "title": "Odisseia",
+        "description": "Jornada épica de Ulisses de volta para casa após a Guerra de Troia.",
+        "cover": "https://m.media-amazon.com/images/I/81mOya9H93L._UF894,1000_QL80_.jpg",
+        "pdfLink": "https://prioste2015.files.wordpress.com/2015/03/homero-odisseia-trad.-carlos-alberto-nunes.pdf",
+        "category": "Literatura"
+    },
+    {
+        "title": "A Moreninha",
+        "description": "Romance sobre o amor juvenil no Rio de Janeiro.",
+        "cover": "https://m.media-amazon.com/images/I/61rqadtSs3S._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.culturatura.com.br/obras/A%20moreninha.pdf",
+        "category": "Romance"
+    },
+    {
+        "title": "O Alienista",
+        "description": "Médico que investiga a linha tênue entre sanidade e loucura.",
+        "cover": "https://m.media-amazon.com/images/I/61+cCiPBnWL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action&co_obra=1939&co_midia=2",
+        "category": "Psicologia"
+    },
+    {
+        "title": "O Livro do Desassossego",
+        "description": "Reflexões fragmentadas sobre a vida e o tédio.",
+        "cover": "https://m.media-amazon.com/images/I/51yAXUUteyL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://agrcanelas.edu.pt/blogs/biblioteca/files/2012/11/Livro-do-Desassossego-.pdf",
+        "category": "Filosofia"
+    },
+    {
+        "title": "Memórias Póstumas de Brás Cubas",
+        "description": "Narrativa satírica de um autor defunto.",
+        "cover": "https://m.media-amazon.com/images/I/71OL9RU2tJL.jpg",
+        "pdfLink": "https://machado.mec.gov.br/obra-completa-lista/item/download/16_ff646a924421ea897f27cf6d21e6bb23",
+        "category": "Romance"
+    },
+    {
+        "title": "O Cortiço",
+        "description": "Crônica realista da vida em um cortiço carioca.",
+        "cover": "https://m.media-amazon.com/images/I/71xpLxVJnsL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.culturatura.com.br/obras/O%20Corti%C3%A7o.pdf",
+        "category": "Literatura"
+    },
+    {
+        "title": "Triste Fim de Policarpo Quaresma",
+        "description": "História de um patriota idealista e sua desilusão.",
+        "cover": "https://m.media-amazon.com/images/I/71SL01dqwwL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=1867&co_midia=2",
+        "category": "Romance"
+    },
+    {
+        "title": "Dom Casmurro",
+        "description": "História de amor e ciúmes contada por Bentinho.",
+        "cover": "https://m.media-amazon.com/images/I/61Z2bMhGicL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://ddcus.org/pdf/summer_reading/11th_grade/Dom_Casmurro-Machado_de_Assis.pdf",
+        "category": "Romance"
+    },
+    {
+        "title": "A Alma Encantadora das Ruas",
+        "description": "Retrato da vida nas ruas do Rio de Janeiro.",
+        "cover": "https://m.media-amazon.com/images/I/71gH0qe5ifL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.rio.rj.gov.br/dlstatic/10112/4204210/4101365/alma_encant_ruas.pdf",
+        "category": "Sociologia"
+    },
+    {
+        "title": "Casa-Grande & Senzala",
+        "description": "Estudo sobre a formação da sociedade brasileira.",
+        "cover": "https://m.media-amazon.com/images/I/61rs6fXkoHL._AC_UF894,1000_QL80_.jpg",
+        "pdfLink": "https://gruponsepr.files.wordpress.com/2016/10/freyre_gilberto_casa_-_grande__senzala.pdf",
+        "category": "História"
+    },
+    {
+        "title": "Viagens na Minha Terra",
+        "description": "Relato de uma viagem pelo interior de Portugal.",
+        "cover": "https://m.media-amazon.com/images/I/81-V3i5sWlL._UF894,1000_QL80_.jpg",
+        "pdfLink": "https://bibliotecaaefga.wordpress.com/wp-content/uploads/2019/07/viagens-na-minha-terra.pdf",
+        "category": "Literatura"
+    },
+    {
+        "title": "A Relíquia",
+        "description": "Sátira sobre a hipocrisia religiosa.",
+        "cover": "https://m.media-amazon.com/images/I/91p14h7qA-L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.agr-tc.pt/bibliotecadigital/aetc/download/98/A%20Reliquia%20-%20Eca%20de%20Queiros.pdf",
+        "category": "Religião"
+    },
+    {
+        "title": "O Homem que Sabia Javanês",
+        "description": "Conto humorístico sobre a falsidade intelectual.",
+        "cover": "https://m.media-amazon.com/images/I/81Ye6ezMVzL._UF894,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=1861&co_midia=2",
+        "category": "Comédia"
+    },
+    {
+        "title": "Contos Gauchescos",
+        "description": "Histórias sobre a vida do gaúcho no sul do Brasil.",
+        "cover": "https://m.media-amazon.com/images/I/91taksKfyNL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=1829&co_midia=2",
+        "category": "Contos"
+    },
+    {
+        "title": "O Mulato",
+        "description": "Romance que aborda o preconceito racial no Brasil.",
+        "cover": "https://m.media-amazon.com/images/I/611ahngu8HL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.culturatura.com.br/obras/o%20mulato.pdf",
+        "category": "Romance"
+    },
+    {
+        "title": "Quincas Borba",
+        "description": "História de um filósofo e seu cão.",
+        "cover": "https://m.media-amazon.com/images/I/61Kt3d+mhuL.jpg",
+        "pdfLink": "https://machado.mec.gov.br/obra-completa-lista/item/download/14_7bbc6c42393beeac1fd963c16d935f40",
+        "category": "Filosofia"
+    },
+    {
+        "title": "Helena",
+        "description": "Amor impossível entre meio-irmãos.",
+        "cover": "https://m.media-amazon.com/images/I/71Vu9aNswyL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://machado.mec.gov.br/obra-completa-lista/item/download/18_6eeff49614c4b3fcfa0adbd92c8cdb28",
+        "category": "Romance"
+    },
+    {
+        "title": "Noites na Taverna",
+        "description": "Contos macabros e góticos.",
+        "cover": "https://m.media-amazon.com/images/I/71FbiI8zHeL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://upload.wikimedia.org/wikipedia/commons/c/ca/A_noite_na_taverna_%281878%29.pdf",
+        "category": "Terror"
+    },
+    {
+        "title": "Uma Capital Federal",
+        "description": "Crítica social sobre a vida no Rio de Janeiro.",
+        "cover": "https://m.media-amazon.com/images/I/91qawwJMEXL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.portugues.seed.pr.gov.br/arquivos/File/leit_online/artur4.pdf",
+        "category": "Drama"
+    },
+    {
+        "title": "Canaã",
+        "description": "Conflitos culturais entre imigrantes alemães no Brasil.",
+        "cover": "https://m.media-amazon.com/images/I/81JXXOFW2cL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://fundar.org.br/wp-content/uploads/2021/06/canaa.pdf",
+        "category": "Romance"
+    },
+    {
+        "title": "Iracema",
+        "description": "Lenda de amor entre uma Índia e um colonizador.",
+        "cover": "https://m.media-amazon.com/images/I/71LCDi6E2oL.jpg",
+        "pdfLink": "http://www.culturatura.com.br/obras/iracema.pdf",
+        "category": "Literatura"
+    },
+    {
+        "title": "Inocência",
+        "description": "Amor impossível no sertão brasileiro.",
+        "cover": "https://m.media-amazon.com/images/I/81j8ocnADUL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=17500&co_midia=2",
+        "category": "Romance"
+    },
+    {
+        "title": "O Primo Basílio",
+        "description": "Crítica à burguesia lisboeta.",
+        "cover": "https://m.media-amazon.com/images/I/61-eRZxJ6gL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=2745&co_midia=2",
+        "category": "Romance"
+    },
+    {
+        "title": "Senhora",
+        "description": "Retrato do casamento por conveniência na sociedade carioca.",
+        "cover": "https://m.media-amazon.com/images/I/819DZYseWVL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/download/texto/bv000139.pdf",
+        "category": "Romance"
+    },
+  {
+        "title": "O Ateneu",
+        "description": "Educação e corrupção em um internacional.",
+        "cover": "https://m.media-amazon.com/images/I/81RVE8SZNTL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=2008&co_midia=2",
+        "category": "Educação"
+    },
+    {
+        "title": "Os Sertões",
+        "description": "Relato sobre a Guerra de Canudos.",
+        "cover": "https://m.media-amazon.com/images/I/91gnEooIQpL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://fundar.org.br/wp-content/uploads/2021/06/os-sertoes.pdf",
+        "category": "História"
+    },
+    {
+        "title": "A Normalista",
+        "description": "Crítica ao sistema educacional do Brasil.",
+        "cover": "https://m.media-amazon.com/images/I/71B4fzO2vHL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=2016&co_midia=2",
+        "category": "Educação"
+    },
+    {
+        "title": "O Guarani",
+        "description": "Romance indianista sobre a colonização.",
+        "cover": "https://m.media-amazon.com/images/I/91-16juFmnL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://bds.unb.br/bitstream/123456789/955/1/O%20Guarani_%C3%ADntegra.pdf",
+        "category": "Aventura"
+    },
+    {
+        "title": "Poesias Completas de Castro Alves",
+        "description": "Obras sobre abolicionismo e amor.",
+        "cover": "https://m.media-amazon.com/images/I/816ybH7zyPL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=1785&co_midia=2",
+        "category": "Poemas"
+    },
+    {
+        "title": "O Navio Negreiro",
+        "description": "Poema que denuncia a escravidão.",
+        "cover": "https://m.media-amazon.com/images/I/71NMYymG6zL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://coletivoleitor.com.br/uploads/demos/o-navio-negreiro-classicos-saraiva.pdf",
+        "category": "Poemas"
+    },
+    {
+        "title": "A Escrava Isaura",
+        "description": "Romance sobre a luta de uma escravidão pela liberdade.",
+        "cover": "https://m.media-amazon.com/images/I/81p32V7iU6L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=1775&co_midia=2",
+        "category": "Romances Históricos"
+    },
+    {
+        "title": "Histórias da Meia-Noite",
+        "description": "Contos sobre a sociedade carioca.",
+        "cover": "https://m.media-amazon.com/images/I/713QNCXu7OL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=1893&co_midia=2",
+        "category": "Contos"
+    },
+    {
+        "title": "O Seminarista",
+        "description": "Amor proibido entre um seminarista e um jovem.",
+        "cover": "https://m.media-amazon.com/images/I/61ggTTE+deL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=16585&co_midia=",
+        "category": "Romance"
+    },
+    {
+        "title": "A Viuvinha",
+        "description": "Romance sobre amor e sacrifícios.",
+        "cover": "https://m.media-amazon.com/images/I/615v3GGogkL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=1852&co_midia=2",
+        "category": "Romance"
+    },
+    {
+        "title": "Contos Fluminenses",
+        "description": "Narrativas sobre o cotidiano fluminense.",
+        "cover": "https://m.media-amazon.com/images/I/61-E60vwsxL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=1878&co_midia=2",
+        "category": "Contos"
+    },
+    {
+        "title": "Clara dos Anjos",
+        "description": "Crítica ao preconceito racial no subúrbio carioca.",
+        "cover": "https://m.media-amazon.com/images/I/91EegZgQpNL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.dominiopublico.gov.br/pesquisa/DetalheObraDownload.do?select_action=&co_obra=2060&co_midia=2",
+        "category": "Drama"
+    },
+    {
+        "title": "Vidas Secas",
+        "description": "Saga de uma família sertaneja durante a seca.",
+        "cover": "https://m.media-amazon.com/images/I/81XM08cKsYL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.ep.com.br/livros_vest/vidas_secas.pdf",
+        "category": "Drama"
+    },
+    {
+        "title": "O Livro das Mil e Uma Noites",
+        "description": "Coletânea de contos árabes.",
+        "cover": "https://m.media-amazon.com/images/I/819e5qnRVML._UF894,1000_QL80_.jpg",
+        "pdfLink": "https://preprints.readingroo.ms/jansen/jansen-Mil-E-Uma-Noites.pdf",
+        "category": "Contos"
+    },
+    {
+        "title": "Os Maias",
+        "description": "Crônica da decadência da aristocracia portuguesa.",
+        "cover": "https://m.media-amazon.com/images/I/91xttf5vyuL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://figaro.fis.uc.pt/queiros/obras/Maias/Maias_20001210.pdf",
+        "category": "Romance"
+    },
+    {
+        "title": "O Inferno",
+        "description": "Primeiro volume da Divina Comédia.",
+        "cover": "https://m.media-amazon.com/images/I/91LZigHV56L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://valde.com.br/public/fileadmin/user_upload/O_Inferno_-_Monsenhor_de_Segur.pdf",
+        "category": "Literatura"
+    },
+    {
+        "title": "O Gato Preto",
+        "description": "Conto de terror sobre culpa e loucura.",
+        "cover": "https://m.media-amazon.com/images/I/61rfgq5Ta6L._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.agr-tc.pt/bibliotecadigital/aetc/download/69/O%20Gato%20Preto%20-%20Edgar%20Allan%20Poe.pdf",
+        "category": "Terror"
+    },
+    {
+        "title": "A Filosofia na Alcova",
+        "description": "Diálogo libertino sobre filosofia e moralidade.",
+        "cover": "https://m.media-amazon.com/images/I/61YJqglXZEL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://joaocamillopenna.wordpress.com/wp-content/uploads/2018/03/sade-a-filosofia-na-alcova-ou-os-preceptores-imorais-marques-de-sade1.pdf",
+        "category": "Filosofia"
+    },
+    {
+        "title": "O Livro de Areia",
+        "description": "Contos fantásticos sobre o infinito.",
+        "cover": "https://m.media-amazon.com/images/I/61hHgxDFMHL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://aulasdathaisunitau.com/wp-content/uploads/2024/08/borges-o-livro-de-areia.pdf",
+        "category": "Fantasia"
+    },
+    {
+        "title": "Os Trabalhadores do Mar",
+        "description": "Romance sobre o confronto do homem com a natureza.",
+        "cover": "https://m.media-amazon.com/images/I/61tYsGCykkL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://machado.mec.gov.br/obra-completa-lista/item/download/121_d5bb3fa36ae3c0d1f136d2190a209213",
+        "category": "Aventura"
+    },
+    {
+        "title": "A Guerra dos Mundos",
+        "description": "Ficção científica sobre invasão.",
+        "cover": "https://m.media-amazon.com/images/I/91r3rBPFgcS._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "http://www.uel.br/pessoal/jneto/gradua/historia/recdida/GuerradosMundosJNETO.pdf",
+        "category": "Ficção científica"
+    },
+    {
+        "title": "A Revolução dos Bichos",
+        "description": "Fábula política sobre o totalitarismo.",
+        "cover": "https://m.media-amazon.com/images/I/91BsZhxCRjL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://multimidia.gazetadopovo.com.br/media/info/2021/202110/bichos/revolucao-dos-bichos.pdf",
+        "category": "Política"
+    },
+    {
+        "title": "O Diário de Anne Frank",
+        "description": "Relato da vida de uma menina judia durante a Segunda Guerra Mundial.",
+        "cover": "https://m.media-amazon.com/images/I/61UWfPZuxJL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.agr-tc.pt/bibliotecadigital/aetc/download/1018/O%20Diario%20de%20Anne%20Frank%20-%20Anne%20Frank.pdf",
+        "category": "Biografias"
+    },
+    {
+        "title": "A Teoria da Relatividade",
+        "description": "Explicação acessível da teoria de Einstein.",
+        "cover": "https://m.media-amazon.com/images/I/91IE8nvPcNL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://www.if.ufrgs.br/~dahmen/DahmenRelativitaet.pdf",
+        "category": "Física"
+    },
+    {
+        "title": "O Livro dos Mártires",
+        "description": "Narrativa sobre perseguições religiosas.",
+        "cover": "https://m.media-amazon.com/images/I/71syodT1WzL.jpg",
+        "pdfLink": "https://cavcomunidade.wordpress.com/wp-content/uploads/2017/12/o-livro-dos-martires-john-foxe.pdf",
+        "category": "Religião"
+    },
+    {
+        "title": "O Método",
+        "description": "Reflexões filosóficas de René Descartes.",
+        "cover": "https://m.media-amazon.com/images/I/61jnW49jkZL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://monoskop.org/images/b/b3/Morin_Edgar_O_metodo_1_A_natureza_da_natureza.pdf",
+        "category": "Filosofia"
+    },
+    {
+        "title": "O Manifesto Futurista",
+        "description": "Proclamação artística e política do futurismo.",
+        "cover": "https://m.media-amazon.com/images/I/91IqrTRDzDL._UF894,1000_QL80_.jpg",
+        "pdfLink": "https://comaarte.wordpress.com/wp-content/uploads/2013/06/manifesto-do-futurismo.pdf",
+        "category": "Arte"
+    },
+    {
+        "title": "Apologia de Sócrates",
+        "description": "Defesa filosófica de Sócrates por Platão.",
+        "cover": "https://m.media-amazon.com/images/I/71QQqjSqLxL._AC_UF1000,1000_QL80_.jpg",
+        "pdfLink": "https://fabiomesquita.wordpress.com/wp-content/uploads/2015/05/platc3a3o-c3aautifron-apologia-de-sc3b3crates-crc3adton.pdf",
+        "category": "Filosofia"
+    },
+    {
+        "title": "Bíblia Sagrada",
+        "description": "A Bíblia é composta de 66 livros e está dividida em duas partes: o Velho. Testamento (39 livros) e o Novo Testamento (27 livros)",
+        "cover": "https://www.baixelivros.com.br/media/2020/02/biblia-catolica.jpg",
+        "pdfLink": "https://www.churchofjesuschrist.org/bc/content/shared/content/portuguese/pdf/language-materials/83800_por.pdf",
+        "category": "Religião"
+    },
+    {
+        "title": "Drácula: de Bram Stoker",
+        "description": "Bram Stoker publicou seu romance Drácula em maio de 1897, estruturando-o como um romance epistolar...",
+        "cover": "https://m.media-amazon.com/images/I/81udC43PC2L._UF894,1000_QL80_.jpg",
+        "pdfLink": "https://www.ebooksbrasil.org/adobeebook/draculap.pdf",
+        "category": "Romance"
+    }
+]
+ 
+
+        // Exibir os livros na tela
+        function displayBooks() {
+            const grid = document.getElementById('bookGrid');
+            grid.innerHTML = '';
+
+            books.forEach(book => {
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.innerHTML = `
+                    <img src="${book.cover}" alt="${book.title}">
+                    <div class="book-card-body">
+                        <h5>${book.title}</h5>
+                        <p>${book.description}</p>
+                        <a href="${book.pdfLink}" target="_blank">Baixar PDF</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filtrar livros
+        function filterBooks() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const filteredBooks = books.filter(book => {
+                return (
+                    book.title.toLowerCase().includes(searchInput) ||
+                    book.description.toLowerCase().includes(searchInput)
+                ) && (categoryFilter === '' || book.category === categoryFilter);
+            });
+            displayFilteredBooks(filteredBooks);
+        }
+
+        function displayFilteredBooks(filteredBooks) {
+            const grid = document.getElementById('bookGrid');
+            grid.innerHTML = '';
+
+            filteredBooks.forEach(book => {
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.innerHTML = `
+                    <img src="${book.cover}" alt="${book.title}">
+                    <div class="book-card-body">
+                        <h5>${book.title}</h5>
+                        <p>${book.description}</p>
+                        <a href="${book.pdfLink}" target="_blank">Baixar PDF</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Exibir os livros inicialmente
+        displayBooks();
+    </script>
+
+</body>
+</html>
